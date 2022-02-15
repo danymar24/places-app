@@ -1,12 +1,31 @@
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { Provider } from 'react-redux';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
+import ReduxThunk from 'redux-thunk';
+import StackNavigation from './navigation/StackNavigation';
+
+import PlacesReducer from './store/places/reducer';
+
+const client = new ApolloClient({
+  uri: 'https://us-central1-bbred-b99f1.cloudfunctions.net/graphql',
+  cache: new InMemoryCache()
+})
+
+const rootReducer = combineReducers({
+  PlacesReducer
+});
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <StackNavigation />
+      </Provider>
+    </ApolloProvider>
   );
 }
 
