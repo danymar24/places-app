@@ -10,6 +10,7 @@ import PlacesReducer from './store/places/reducer';
 
 const client = new ApolloClient({
   uri: 'https://us-central1-bbred-b99f1.cloudfunctions.net/graphql',
+  //uri: 'http://localhost:5001/bbred-b99f1/us-central1/graphql',
   cache: new InMemoryCache()
 })
 
